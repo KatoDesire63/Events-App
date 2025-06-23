@@ -1,3 +1,4 @@
+import 'package:events/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'chart.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+  static const String routeName = '/home';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -38,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget _getSelectedPage() {
     switch (_selectedPage) {
       case 0:
-        return const PostPage();
+        return const DashboardPage();
       case 1:
         return const ChartPage();
       case 2:
@@ -53,20 +55,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page'), backgroundColor: Colors.blue),
+      appBar: AppBar(title: Text(''), backgroundColor: Colors.blue),
       body: _getSelectedPage(),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const PostPage()),
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 153, 201, 241),
-        hoverColor: Colors.blue,
-        child: Icon(Icons.add),
-      ),
 
       bottomNavigationBar: NavigationBar(
         indicatorColor: Colors.blue,

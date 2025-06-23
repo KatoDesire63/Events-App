@@ -25,7 +25,7 @@ class AuthPage extends StatelessWidget {
                 // Handle login logic here
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
               child: const Text('Log In'),

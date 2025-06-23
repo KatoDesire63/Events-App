@@ -8,35 +8,40 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
-    // Simulate a delay for splash screen
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..forward();
+
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+
     Timer(const Duration(seconds: 2), () {
-      // Navigate to the home page after the delay
       Navigator.pushReplacementNamed(context, '/home');
     });
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.red[70],
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            FlutterLogo(size: 100),
-            SizedBox(height: 20),
-            Text(
-              'Welcome...',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
-          ],
+        child: ScaleTransition(
+          scale: _animation,
+          child: Image.asset('assets/Logo.png', width: 120, height: 120),
         ),
       ),
     );
