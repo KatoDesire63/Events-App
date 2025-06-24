@@ -30,10 +30,6 @@ class _ChartPageState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chats'),
-        backgroundColor: Colors.blue[700],
-      ),
       body: Column(
         children: [
           Expanded(

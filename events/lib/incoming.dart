@@ -32,10 +32,6 @@ class IncomingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upcoming Events Near You'),
-        backgroundColor: Colors.blue,
-      ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: upcomingEvents.length,

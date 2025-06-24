@@ -1,5 +1,8 @@
 import 'package:events/dashboard.dart';
+import 'package:events/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'theme_provider.dart';
 import 'auth.dart';
 import 'chart.dart';
 import 'incoming.dart';
@@ -8,7 +11,12 @@ import 'search.dart';
 import 'splash.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,9 +24,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Next Plot',
       theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.themeMode,
       home: SplashPage(key: const Key('splash_page')),
       routes: {'/home': (context) => const AuthPage()},
       debugShowCheckedModeBanner: false,
@@ -27,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
   static const String routeName = '/home';
 
   @override
@@ -36,6 +47,73 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
+
+  AppBar _getAppBar() {
+    switch (_selectedPage) {
+      case 0:
+        return AppBar(
+          title: const Text('Dashboard'),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+              );
+            },
+          ),
+        );
+      case 1:
+        return AppBar(
+          title: const Text('Charts'),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+              );
+            },
+          ),
+        );
+      case 2:
+        return AppBar(
+          title: const Text('Search'),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+              );
+            },
+          ),
+        );
+      case 3:
+        return AppBar(
+          title: const Text('Incoming'),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+              );
+            },
+          ),
+        );
+      default:
+        return AppBar(
+          title: const Text('Posts'),
+          backgroundColor: Colors.blue,
+          leading: IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
+        );
+    }
+  }
 
   Widget _getSelectedPage() {
     switch (_selectedPage) {
@@ -55,7 +133,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(''), backgroundColor: Colors.blue),
+      appBar: _getAppBar(),
       body: _getSelectedPage(),
 
       bottomNavigationBar: NavigationBar(
