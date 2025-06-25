@@ -1,5 +1,6 @@
 import 'package:events/post.dart';
 import 'package:flutter/material.dart';
+import 'package:random_person_data/random_person_data.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -10,16 +11,16 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final List<String> imagePaths = [
-    'assets/artist-3480274_1280.jpg',
-    'assets/audience-1867754_1280(1).jpg',
-    'assets/audio-720589_1280.jpg',
-    'assets/black-and-white-4550471_1280(2).jpg',
-    'assets/celebration-1852926_1280(1).jpg',
-    'assets/concert-3084876_1280(1).jpg',
-    'assets/dj-2250056_1280.jpg',
-    'assets/music-7238254_1280(1).jpg',
-    'assets/hand-1850120_1280.jpg',
-    'assets/wine-8949009_1280(1).jpg',
+    'assets/pic1.jpg',
+    'assets/pic2.jpg',
+    'assets/pic3.jpg',
+    'assets/pic4.jpg',
+    'assets/pic5.jpg',
+    'assets/pic6.jpg',
+    'assets/pic7.jpg',
+    'assets/pic8.jpg',
+    'assets/pic9.jpg',
+    'assets/pic10.jpg',
   ];
 
   final List<String> titles = [
@@ -48,32 +49,6 @@ class _DashboardPageState extends State<DashboardPage> {
     'Wine tasting event.',
   ];
 
-  final List<String> usernames = [
-    'artist_guru',
-    'event_fan',
-    'soundtech',
-    'bw_photog',
-    'partylover',
-    'concertgoer',
-    'djmax',
-    'musicman',
-    'handyman',
-    'winelover',
-  ];
-
-  final List<String> handles = [
-    '@artistguru',
-    '@eventfan',
-    '@soundtech',
-    '@bwphotog',
-    '@partylover',
-    '@concertgoer',
-    '@djmax',
-    '@musicman',
-    '@handyman',
-    '@winelover',
-  ];
-
   final List<String> times = [
     '2m',
     '5m',
@@ -87,12 +62,41 @@ class _DashboardPageState extends State<DashboardPage> {
     '45m',
   ];
 
+  //Using Random User Generator API
+  List<RandomPersonData> persons = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRandomPerson();
+  }
+
+  Future<void> fetchRandomPerson() async {
+    final randomPerson = RandomPerson();
+    final fetchedPersons = await randomPerson.get(
+      results: 10,
+      gender: Gender.male,
+      password: "special,upeer,lower,number",
+      nationality: Nationality.US,
+    );
+
+    setState(() {
+      persons = fetchedPersons;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       body: ListView.builder(
-        itemCount: titles.length,
+        itemCount: persons.length,
         itemBuilder: (context, index) {
+          final person = persons[index];
           return Card(
             margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
             elevation: 0,
@@ -106,11 +110,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   // Avatar
                   CircleAvatar(
-                    backgroundColor: Colors.blue[200],
-                    child: Text(
-                      titles[index][0],
-                      style: const TextStyle(color: Colors.white),
+                    backgroundImage: NetworkImage(
+                      person.picture?.large ??
+                          'https://via.placeholder.com/150',
                     ),
+                    backgroundColor: Colors.blue[200],
                   ),
                   const SizedBox(width: 12),
                   // Tweet content
@@ -118,11 +122,11 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Username, handle, time
+                        // Username, nationality, time
                         Row(
                           children: [
                             Text(
-                              usernames[index],
+                              '${person.name?.first ?? ''} ${person.name?.last ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -130,7 +134,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              handles[index],
+                              (person.nat ?? '').toString(),
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -138,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              '· ${times[index]}',
+                              '· ${times[index % times.length]}',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -149,7 +153,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         const SizedBox(height: 6),
                         // Tweet text
                         Text(
-                          descriptions[index],
+                          descriptions[index % descriptions.length],
                           style: const TextStyle(fontSize: 15),
                         ),
                         const SizedBox(height: 8),
@@ -157,7 +161,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
-                            imagePaths[index],
+                            imagePaths[index % imagePaths.length],
                             height: 180,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -212,7 +216,7 @@ class _DashboardPageState extends State<DashboardPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        hoverColor: Color.fromARGB(255, 171, 217, 239),
+        hoverColor: const Color.fromARGB(255, 171, 217, 239),
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {

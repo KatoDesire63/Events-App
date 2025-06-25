@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage>
       body: Center(
         child: ScaleTransition(
           scale: _animation,
-          child: Image.asset('assets/Logo.png', width: 120, height: 120),
+          child: Image.asset('assets/Splash.png', width: 120, height: 120),
         ),
       ),
     );

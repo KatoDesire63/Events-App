@@ -11,21 +11,21 @@ class IncomingPage extends StatelessWidget {
       'desc': 'Don\'t miss the hottest concert in town!',
       'time': 'Starts in 2 hours',
       'location': 'Downtown Arena',
-      'image': 'assets/concert-3084876_1280.jpg',
+      'image': 'assets/pic11.jpg',
     },
     {
       'title': 'Wine Tasting',
       'desc': 'Experience the best local wines.',
       'time': 'Starts in 3 hours',
       'location': 'City Winery',
-      'image': 'assets/wine-8949009_1280(1).jpg',
+      'image': 'assets/pic20.jpg',
     },
     {
       'title': 'Art Exhibition',
       'desc': 'Modern art from local artists.',
       'time': 'Starts in 1 hour',
       'location': 'Art Gallery (near you)',
-      'image': 'assets/artist-3480274_1280.jpg',
+      'image': 'assets/pic13.jpg',
     },
   ];
 
